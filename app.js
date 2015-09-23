@@ -1,29 +1,34 @@
-// MODULE
-var myApp = angular.module('myApp', ['ngMessages', 'ngResource']);
+var myApp = angular.module('myApp', []);
 
-// CONTROLLERS
-myApp.controller('mainController', ['$scope', '$timeout', '$log', '$filter', '$resource', function($scope, $timeout, $log, $filter, $resource) {
-	$log.log("This is some log.");
-	$log.info("This is some info.");
-	$log.warn("This is some warning!");
-	$log.debug("This is some debug info.");
-	$log.error("This is some error infor!");
+myApp.controller('mainController', ['$scope', '$filter', '$timeout', function($scope, $filter, $timeout) {
+    
+	$scope.handle = '';
+
+	$scope.lowercasehandle = function() {
+			return $filter('lowercase')($scope.handle);
+	};
+
+	$scope.$watch('handle', function(newValue, oldValue) {
+
+			console.info('Changed!');
+			console.log('Old:' + oldValue);
+			console.log('New:' + newValue);
+
+	});
 	
-	$scope.name = "Philip Dai";
-	$scope.formattedName = $filter('uppercase')($scope.name);
-	$log.log("The name is " + $scope.name);
-	$log.log("The formatted name is " + $scope.formattedName);
-	
-	$log.log($resource);
-	
-	$timeout(function() {
-		$scope.name = "Everybody";
+	setTimeout(function() {
+		$scope.$apply(function() {
+			$scope.handle = 'newtwitterhandle';
+			console.log('Scope changed!');
+		});
 	}, 3000);
 	
-	$scope.handle = "";
-	
-	$scope.lowercaseHandle = function() {
-		return $filter('lowercase')($scope.handle);
-	}
+    
+//	$timeout(function() {
+//
+//			$scope.handle = 'newtwitterhandle';
+//			console.log('Scope changed!');
+//
+//	}, 3000);
+    
 }]);
-
