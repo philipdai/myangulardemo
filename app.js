@@ -1,36 +1,54 @@
 var myApp = angular.module('myApp', ['ngRoute']);
 
-myApp.config(function($routeProvider) {
-	$routeProvider
-	.when('/', {
-		templateUrl: 'pages/main.html',
-		controller: 'mainController'
-	})
-	.when('/second', {
-		templateUrl: 'pages/second.html',
-		controller: 'secondController'
-	})
-	.when('/second/:num', {
-		templateUrl: 'pages/second.html',
-		controller: 'secondController'
-	})
+myApp.config(function ($routeProvider) {
+    
+    $routeProvider
+    
+    .when('/', {
+        templateUrl: 'pages/main.html',
+        controller: 'mainController'
+    })
+    
+    .when('/second', {
+        templateUrl: 'pages/second.html',
+        controller: 'secondController'
+    })
+    
+    .when('/second/:num', {
+        templateUrl: 'pages/second.html',
+        controller: 'secondController'
+    })
+    
 });
 
-myApp.controller('mainController', ['$scope', '$location', '$log', function($scope, $location, $log) {
-  $scope.name = "Main";
-	$log.main = 'Property from main';
-	$log.info($location.path());
-  $log.log($log);
-	$log.log($scope);
+myApp.service('nameService', function() {
+	var self = this;
+	this.name = "Philip Dai";
+	this.namelength = function() {
+		return self.name.length;
+	};
+});
+
+myApp.controller('mainController', ['$scope', '$log', 'nameService', function($scope, $log, nameService) {
+    
+	$scope.name = nameService.name;
+	
+	$scope.$watch('name', function() {
+		nameService.name = $scope.name;
+	});
+	
+	$log.log(nameService.name);
+	$log.log(nameService.namelength());
+    
 }]);
 
-myApp.controller('secondController', ['$scope', '$location', '$log', '$routeParams', function($scope, $location, $log, $routeParams) {
-  $scope.name = "Second";  
+myApp.controller('secondController', ['$scope', '$log', '$routeParams', 'nameService', function($scope, $log, $routeParams, nameService) {
+    
 	$scope.num = $routeParams.num || 1;
+	$scope.name = nameService.name;
 	
-	$log.second = "Property from second";
-	$log.info($location.path());
-  $log.log($log);
-		$log.log($scope);
-
+	$scope.$watch('name', function() {
+		nameService.name = $scope.name;
+	});
+    
 }]);
