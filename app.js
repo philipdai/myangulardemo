@@ -19,5 +19,11 @@ myApp.controller('mainController', ['$scope', '$timeout', '$log', '$filter', '$r
 	$timeout(function() {
 		$scope.name = "Everybody";
 	}, 3000);
+	
+	$scope.handle = "";
+	
+	$scope.lowercaseHandle = function() {
+		return $filter('lowercase')($scope.handle);
+	}
 }]);
 
