@@ -2,7 +2,7 @@
 var myApp = angular.module('myApp', ['ngMessages', 'ngResource']);
 
 // CONTROLLERS
-myApp.controller('mainController', function($scope, $log, $filter, $resource) {
+myApp.controller('mainController', ['$scope', '$log', '$filter', '$resource', function($scope, $log, $filter, $resource) {
 	$log.log("This is some log.");
 	$log.info("This is some info.");
 	$log.warn("This is some warning!");
@@ -15,5 +15,5 @@ myApp.controller('mainController', function($scope, $log, $filter, $resource) {
 	$log.log("The formatted name is " + $scope.formattedName);
 	
 	$log.log($resource);
-});
+}]);
 
