@@ -9,11 +9,18 @@ myApp.controller('mainController', ['$scope', '$filter', function($scope, $filte
 	};
 
 	$scope.characters = 5;
+
+	var rulesrequest = new XMLHttpRequest();
 	
-	$scope.rules = [
-		{ rulename: "Must be 5 characters" },
-		{ rulename: "Must not be used elsewhere" },
-		{ rulename: "Must be cool" }
-	];
+	rulesrequest.onreadystatechange = function() {
+		$scope.$apply(function() {
+			if (rulesrequest.readyState == 4 && rulesrequest.status == 200) {
+				$scope.rules = JSON.parse(rulesrequest.responseText);
+			}
+		});
+	}
+	
+	rulesrequest.open("GET", "http://localhost:54765/api", true);
+	rulesrequest.send();
     
 }]);
